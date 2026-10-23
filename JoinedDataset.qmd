@@ -1,0 +1,62 @@
+---
+title: "JoinedDataset"
+author: "Grace Rubio, Oyinda Sanni, Mia Mason"
+format: pdf
+---
+
+## Load in packages
+
+```{r}
+#| label: setup 
+#| include: false
+#| library(tidyverse)
+#| library(tidymodels)
+```
+
+## Importing Data
+
+1.  Import the data
+
+```{r}
+# Response Variable
+democracy <-read_csv("Data/democracy2020.csv")   
+# Predictor Variables 
+CO2_emissions <-read_csv("Data/co2_cons.csv")
+gdp <-read_csv("Data/gdp_pcap.csv")
+humanDevIndx <-read_csv("Data/hdi_human_development_index.csv")
+poverty<-read_csv("Data/number_of_people_in_poverty.csv")
+gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
+```
+
+## Wrangling Data
+
+TODO: 1. Combine all the data into a large dataset
+
+*NOTE:* We will use the last recorded year for the datasets that do not
+have a 2025 entry.
+
+```{r}
+data_lst<- list(CO2_emissions, gdp, humanDevIndx, poverty, gapminder_2025)
+
+Full_2025<-life_exp 
+for (dataset in data_lst){  
+  Full_2025 <- Full_2025|>
+    full_join(dataset, by="geo")
+}
+
+Full_2025<-Full_2025|>
+  select(geo,name.x,`2025.x`, # keep life_exp 2025 columns
+         `2022.y`, # keep 2025 co2 column
+         `2025.y`,  # keep 2025 gdp column
+         `2023.x.x`,  # keep 2025 humanDevIdnx column
+         `2025`,     # keep 2025 poverty column
+         world_4region # keep 2025 regions column
+         )|>
+  rename(name = name.x, #rename columns for clarity
+         life_Exp=`2025.x`,
+         CO2=`2022.y`,
+         GDP=`2025.y`,
+         Poverty = `2025`,
+         HumDevIndx= `2023.x.x`
+         ) 
+```
