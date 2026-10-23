@@ -21,9 +21,9 @@ format: pdf
 # Response Variable
 democracy <-read_csv("Data/democracy2020.csv")   
 # Predictor Variables 
-CO2_emissions <-read_csv("Data/co2_cons.csv")
+CO2 <-read_csv("Data/co2_cons.csv")
 gdp <-read_csv("Data/gdp_pcap.csv")
-humanDevIndx <-read_csv("Data/hdi_human_development_index.csv")
+HDI <-read_csv("Data/hdi_human_development_index.csv")
 poverty<-read_csv("Data/number_of_people_in_poverty.csv")
 gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
@@ -32,31 +32,24 @@ gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions)
 
 TODO: 1. Combine all the data into a large dataset
 
-*NOTE:* We will use the last recorded year for the datasets that do not
-have a 2025 entry.
+*NOTE:* We will use the last recorded year for the datasets that do not have a 2025 entry.
 
 ```{r}
-data_lst<- list(CO2_emissions, gdp, humanDevIndx, poverty, gapminder_2025)
+# Join Data Files
+data_lst<- list(select(CO2, geo,'2022'), select(gdp, geo, '2025'), select(HDI, geo,'2023'), select(poverty, geo, '2025'), select(gapminder_2025, geo, world_4region))
 
-Full_2025<-life_exp 
+Full_2025<-democracy 
 for (dataset in data_lst){  
   Full_2025 <- Full_2025|>
     full_join(dataset, by="geo")
 }
 
 Full_2025<-Full_2025|>
-  select(geo,name.x,`2025.x`, # keep life_exp 2025 columns
-         `2022.y`, # keep 2025 co2 column
-         `2025.y`,  # keep 2025 gdp column
-         `2023.x.x`,  # keep 2025 humanDevIdnx column
-         `2025`,     # keep 2025 poverty column
-         world_4region # keep 2025 regions column
-         )|>
-  rename(name = name.x, #rename columns for clarity
-         life_Exp=`2025.x`,
-         CO2=`2022.y`,
-         GDP=`2025.y`,
-         Poverty = `2025`,
-         HumDevIndx= `2023.x.x`
+  rename( #rename columns for clarity
+         CO2=`2022`,
+         GDP=`2025.x`,
+         Poverty = `2025.y`,
+         HDI= `2023`
          ) 
 ```
+
