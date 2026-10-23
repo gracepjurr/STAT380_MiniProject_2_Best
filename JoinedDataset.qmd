@@ -11,6 +11,7 @@ format: pdf
 #| include: false
 #| library(tidyverse)
 #| library(tidymodels)
+#| library(readr)
 ```
 
 ## Importing Data
@@ -51,5 +52,11 @@ Full_2025<-Full_2025|>
          Poverty = `2025.y`,
          HDI= `2023`
          ) 
+```
+
+## Export Data as CSV
+```{r}
+ # read data as csv
+write_csv(Full_2025, "Data/FullData_2025.csv")
 ```
 
