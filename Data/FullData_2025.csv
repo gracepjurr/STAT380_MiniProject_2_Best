@@ -1,0 +1,195 @@
+geo,name,Democracy,CO2,GDP,HDI,Poverty,world_4region
+afg,Afghanistan,No,11.694,2092.54588,0.496,20826260,asia
+ago,Angola,No,43.612,7457.17479,0.616,16792023,africa
+alb,Albania,Yes,5.976,20361.79277,0.81,3288,europe
+are,UAE,No,199.411,72660.14487,0.94,NA,asia
+arg,Argentina,Yes,175.07,28467.05855,0.865,476407,americas
+arm,Armenia,No,7.507,21539.01147,0.811,50696,europe
+aus,Australia,Yes,364.789,61942.61476,0.958,205448,asia
+aut,Austria,Yes,82.244,64665.01876,0.93,48627,europe
+aze,Azerbaijan,No,39.797,23177.53343,0.789,NA,europe
+bdi,Burundi,No,0.658,848.37448,0.439,10365398,africa
+bel,Belgium,Yes,197.314,65096.12262,0.951,8485,europe
+ben,Benin,No,9.479,4143.14163,0.515,3367210,africa
+bfa,Burkina Faso,No,6.941,2661.1876,0.459,9547933,africa
+bgd,Bangladesh,No,144.505,8950.44644,0.685,8610820,asia
+bgr,Bulgaria,Yes,39.492,36210.72816,0.845,65579,europe
+bhr,Bahrain,No,23.611,60839.23381,0.899,461,asia
+bih,Bosnia and Herzegovina,No,20.862,21620.74836,0.804,3433,europe
+blr,Belarus,No,60.276,28456.77856,0.824,161,europe
+bol,Bolivia,No,24.303,10089.6259,0.733,380830,americas
+bra,Brazil,Yes,454.025,20500.23168,0.786,7577637,americas
+btn,Bhutan,No,1.41,16920.9576,0.698,119,asia
+bwa,Botswana,Yes,13.425,18189.03301,0.731,482076,africa
+caf,Central African Republic,No,0.397,1135.80389,0.414,3954599,africa
+can,Canada,Yes,506.575,58422.42505,0.939,29800,americas
+che,Switzerland,Yes,101.776,84310.9311,0.97,4988,europe
+chl,Chile,Yes,89.088,31425.36958,0.878,114580,americas
+chn,China,No,10522.022,25504.91715,0.797,NA,asia
+civ,Cote d'Ivoire,No,16.788,7143.2159,0.582,5555393,africa
+cmr,Cameroon,No,11.381,5107.23253,0.588,7767864,africa
+cod,"Congo, Dem. Rep.",No,2.623,1565.63762,0.522,91496868,africa
+cog,"Congo, Rep.",No,4.021,6377.20603,0.649,3240339,africa
+col,Colombia,Yes,123.925,19301.99344,0.788,3933483,americas
+com,Comoros,No,0.24,3717.61456,0.603,245130,africa
+cpv,Cape Verde,Yes,0.749,10625.35184,0.668,48237,africa
+cri,Costa Rica,Yes,12.346,28390.39988,0.833,72621,americas
+cub,Cuba,No,28.597,15295.86616,0.762,258879,americas
+cyp,Cyprus,Yes,7.035,55720.00354,0.913,104,europe
+cze,Czech Republic,Yes,103.211,50179.53386,0.915,584,europe
+deu,Germany,Yes,775.354,64355.00745,0.959,78094,europe
+dji,Djibouti,No,0.823,7352.87525,0.513,222680,africa
+dnk,Denmark,Yes,45.203,77336.97179,0.962,18484,europe
+dom,Dominican Republic,Yes,34.896,25662.87388,0.776,108304,americas
+dza,Algeria,No,174.217,16189.46985,0.763,NA,africa
+ecu,Ecuador,Yes,48.604,14442.50999,0.777,1040164,americas
+egy,Egypt,No,266.31,17541.37397,0.754,1547813,africa
+eri,Eritrea,No,0.863,2441.67773,0.503,768107,africa
+esp,Spain,Yes,269.048,50242.02774,0.918,178568,europe
+est,Estonia,Yes,13.755,42892.09544,0.905,4694,europe
+eth,Ethiopia,No,23.177,3106.93422,0.497,40862442,africa
+fin,Finland,Yes,48.542,57574.23612,0.948,10947,europe
+fji,Fiji,No,2.421,14765.58232,0.731,36180,asia
+fra,France,Yes,392.461,56112.81238,0.92,46927,europe
+gab,Gabon,No,6.603,19542.93836,0.733,141397,africa
+gbr,UK,Yes,467.574,53993.24847,0.946,185758,europe
+geo,Georgia,No,14.111,27204.56113,0.844,156867,europe
+gha,Ghana,Yes,25.89,7404.44027,0.628,11446689,africa
+gin,Guinea,No,6.543,4320.52378,0.5,1274119,africa
+gmb,Gambia,No,0.792,3199.30847,0.524,498813,africa
+gnb,Guinea-Bissau,No,0.417,2838.37582,0.514,812556,africa
+gnq,Equatorial Guinea,No,7.956,14767.56593,0.674,203885,africa
+grc,Greece,Yes,54.771,39621.40673,0.908,53900,europe
+gtm,Guatemala,No,23.915,13328.77649,0.662,1742359,americas
+guy,Guyana,Yes,2.55,79370.52198,0.776,454,americas
+hnd,Honduras,No,9.14,6863.33285,0.645,1742637,americas
+hrv,Croatia,Yes,23.958,45156.1289,0.889,11486,europe
+hti,Haiti,No,3.157,2808.66975,0.554,5767871,americas
+hun,Hungary,Yes,63.889,42498.58738,0.87,75813,europe
+idn,Indonesia,Yes,650.395,15391.06911,0.728,15512655,asia
+ind,India,Yes,2655.606,10607.6231,0.685,54153959,asia
+irl,Ireland,Yes,43.148,119406.2256,0.949,4262,europe
+irn,Iran,No,679.487,16539.72286,0.799,2520323,asia
+irq,Iraq,No,256.11,12554.13117,0.695,329373,asia
+isl,Iceland,Yes,3.726,67443.7438,0.972,311,europe
+isr,Israel,Yes,77.713,49539.47269,0.919,48370,asia
+ita,Italy,Yes,408.838,54773.81941,0.915,224368,europe
+jam,Jamaica,Yes,6.881,10741.48565,0.72,42171,americas
+jor,Jordan,No,32.679,9977.12098,0.754,30225,asia
+jpn,Japan,Yes,1238.459,47815.39888,0.925,1202418,asia
+kaz,Kazakhstan,No,187.34,38237.52103,0.837,7113,asia
+ken,Kenya,No,30.358,6158.76678,0.628,24924576,africa
+kgz,Kyrgyz Republic,No,18.62,7567.34334,0.72,153400,asia
+khm,Cambodia,No,42.78,7412.02083,0.606,1602648,asia
+kor,South Korea,Yes,700.96,54667.24252,0.937,7032,asia
+kwt,Kuwait,No,102.514,46572.35764,0.852,3425,asia
+lao,Lao,No,24.85,8943.6912,0.617,1017530,asia
+lbn,Lebanon,No,21.52,10819.79651,0.752,370008,asia
+lbr,Liberia,No,1.875,1751.85031,0.51,1887159,africa
+lby,Libya,No,60.232,14636.39331,0.721,189620,africa
+lka,Sri Lanka,Yes,38.373,14379.8147,0.776,830371,asia
+lso,Lesotho,Yes,3.179,2716.15309,0.55,1048973,africa
+ltu,Lithuania,Yes,19.833,49761.39795,0.895,15343,europe
+lux,Luxembourg,Yes,8.219,131037.5237,0.922,463,europe
+lva,Latvia,Yes,14.011,40852.07026,0.889,8762,europe
+mar,Morocco,No,74.948,9582.50716,0.71,1046180,africa
+mda,Moldova,No,4.098,17488.86301,0.785,3906,europe
+mdg,Madagascar,No,6.202,1720.26523,0.487,21568444,africa
+mex,Mexico,Yes,464.366,22374.76858,0.789,3078578,americas
+mkd,North Macedonia,No,7.345,26049.02092,0.815,57948,europe
+mli,Mali,No,4.609,3038.49667,0.419,8235027,africa
+mlt,Malta,Yes,9.246,63314.49955,0.924,558,europe
+mmr,Myanmar,No,29.747,5493.95419,0.609,8432862,asia
+mne,Montenegro,No,1.985,29492.07923,0.862,9125,europe
+mng,Mongolia,Yes,48.375,18091.8807,0.747,11906,asia
+moz,Mozambique,No,15.027,1530.91465,0.493,28556598,africa
+mrt,Mauritania,No,3.129,6709.96294,0.563,476479,africa
+mus,Mauritius,Yes,6.342,28927.4972,0.806,7018,africa
+mwi,Malawi,No,2.832,1689.43091,0.517,16715444,africa
+mys,Malaysia,Yes,254.438,35989.79488,0.819,3634,asia
+nam,Namibia,Yes,10.181,10740.46072,0.665,644038,africa
+ner,Niger,No,2.961,1870.05045,0.419,14977865,africa
+nga,Nigeria,No,151.212,5848.08157,0.56,95605313,africa
+nic,Nicaragua,No,6.557,8023.40633,0.706,340612,americas
+nld,Netherlands,Yes,154.027,73384.1408,0.955,15132,europe
+nor,Norway,Yes,47.365,94895.85433,0.97,9744,europe
+npl,Nepal,No,28.161,5329.63699,0.622,602442,asia
+nzl,New Zealand,Yes,38.924,49598.26506,0.938,2281,asia
+omn,Oman,No,68.235,37310.77532,0.858,7657,asia
+pak,Pakistan,No,258.719,5717.17543,0.544,36449878,asia
+pan,Panama,Yes,17.733,38412.09464,0.839,153288,americas
+per,Peru,Yes,68.287,16370.68024,0.794,1797364,americas
+phl,Philippines,Yes,185.842,11116.63775,0.72,11614932,asia
+png,Papua New Guinea,Yes,9.998,4521.77359,0.576,4693434,asia
+pol,Poland,Yes,319.328,47891.51537,0.906,92838,europe
+prk,North Korea,No,34.526,1542.77448,NA,1630018,asia
+prt,Portugal,Yes,47.277,43664.4989,0.89,47456,europe
+pry,Paraguay,Yes,13.562,17153.71862,0.756,145032,americas
+pse,Palestine,No,3.846,3909.19827,0.674,328657,asia
+qat,Qatar,No,73.468,116057.3359,0.886,NA,asia
+rou,Romania,Yes,85.772,42605.11998,0.845,134814,europe
+rus,Russia,No,1442.518,40870.61672,0.832,135451,europe
+rwa,Rwanda,No,2.461,3512.30613,0.578,5057515,africa
+sau,Saudi Arabia,No,670.843,64965.70305,0.9,12019,asia
+sdn,Sudan,No,25.799,1865.51403,0.511,20467835,africa
+sen,Senegal,No,17.624,4871.2802600000005,0.53,2776716,africa
+sgp,Singapore,Yes,151.945,137905.9791,0.946,23,asia
+sle,Sierra Leone,No,1.326,3255.82436,0.467,3028433,africa
+slv,El Salvador,No,9.329,12221.09674,0.678,295286,americas
+srb,Serbia,Yes,36.889,28758.37917,0.833,127944,europe
+sur,Suriname,Yes,2.096,20256.66324,0.722,12554,americas
+svk,Slovak Republic,Yes,41.58,41977.51553,0.88,22648,europe
+svn,Slovenia,Yes,17.944,50558.74404,0.931,69,europe
+swe,Sweden,Yes,62.833,65596.66352,0.959,42699,europe
+swz,Eswatini,No,1.386,11069.57117,0.695,514708,africa
+syr,Syria,No,40.978,4085.72011,0.564,4524706,asia
+tcd,Chad,No,1.27,2645.81191,0.416,8270959,africa
+tgo,Togo,No,8.021,3007.55596,0.571,2993728,africa
+tha,Thailand,Yes,281.051,22695.94668,0.798,9499,asia
+tjk,Tajikistan,No,14.631,5122.38472,0.691,638486,asia
+tkm,Turkmenistan,No,99.902,18623.63459,0.764,233035,asia
+tls,Timor-Leste,Yes,0.618,4352.93562,0.634,617417,asia
+tto,Trinidad and Tobago,Yes,27.13,33144.88032,0.807,NA,americas
+tun,Tunisia,Yes,27.938,13135.58265,0.746,83808,africa
+tur,Turkey,No,422.126,36992.96579,0.853,321070,europe
+tza,Tanzania,No,20.341,3924.40183,0.555,31904554,africa
+uga,Uganda,No,8.631,3047.99489,0.582,27929968,africa
+ukr,Ukraine,No,172.576,15014.25715,0.779,22784,europe
+ury,Uruguay,Yes,10.972,33757.56245,0.862,6272,americas
+usa,USA,Yes,5563.688,78388.58461,0.938,2141400,americas
+uzb,Uzbekistan,No,97.103,11127.00974,0.74,1004069,asia
+ven,Venezuela,No,19.044,8899.072,0.709,1231006,americas
+vnm,Vietnam,No,212.861,15429.33526,0.766,1402362,asia
+yem,Yemen,No,13.308,1721.89143,0.47,30084871,asia
+zaf,South Africa,Yes,310.179,13889.23888,0.741,20557390,africa
+zmb,Zambia,No,8.487,3944.46383,0.595,15131585,africa
+zwe,Zimbabwe,No,13.13,3675.57058,0.598,7919521,africa
+and,NA,NA,0.472,67385.01529,0.913,NA,europe
+atg,NA,NA,0.557,30870.84372,0.851,1784,americas
+bhs,NA,NA,1.947,37464.41295,0.82,4863,americas
+blz,NA,NA,0.614,13847.69431,0.721,3610,americas
+brb,NA,NA,1.274,21036.46289,0.811,4705,americas
+brn,NA,NA,10.99,82692.81626,0.837,88,asia
+dma,NA,NA,0.187,19949.18463,0.761,4376,americas
+fsm,NA,NA,0.165,3967.76263,0.615,28578,asia
+grd,NA,NA,0.308,18821.06954,0.791,936,americas
+kir,NA,NA,0.085,3420.85689,0.644,6125,asia
+kna,NA,NA,0.222,32676.06378,0.84,936,americas
+lca,NA,NA,0.42,25491.65151,0.748,96,americas
+lie,NA,NA,0.153,NA,0.938,33,NA
+mdv,NA,NA,1.732,24629.31592,0.766,NA,asia
+mhl,NA,NA,0.116,7990.57932,0.733,560,asia
+nru,NA,NA,0.065,12938.44098,0.703,618,asia
+plw,NA,NA,0.257,18884.74308,0.786,270,asia
+slb,NA,NA,0.213,2615.32949,0.584,382782,asia
+som,NA,NA,0.896,1462.56236,0.404,12374382,africa
+ssd,NA,NA,2.033,716.249,0.388,10962279,africa
+stp,NA,NA,0.146,5681.95489,0.637,32843,africa
+syc,NA,NA,0.79,30802.63006,0.848,954,africa
+ton,NA,NA,0.152,7839.22918,0.769,450,asia
+tuv,NA,NA,0.012,6632.53597,0.689,145,asia
+vct,NA,NA,0.213,20092.3654,0.798,5758,americas
+vut,NA,NA,0.187,3188.80002,0.621,78497,asia
+wsm,NA,NA,0.318,7412.51789,0.708,6263,asia
+mco,NA,NA,NA,475911.3352,NA,NA,europe
+smr,NA,NA,NA,78126.26324,0.915,NA,europe
