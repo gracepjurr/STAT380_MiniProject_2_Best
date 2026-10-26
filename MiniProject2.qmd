@@ -28,6 +28,8 @@ FullData_2025 <- read.csv("Data/FullData_2025.csv")
 
 For this section graph and find statistics for each of your predictor variables vs the response. You do not need to look at the predictor variables individually
 
+# SECTION 1 [REMOVE LATER] Oyinda
+
 ## Variable 1: CO2 Emissions
 
 ### Graph and description
@@ -62,6 +64,9 @@ For this section graph and find statistics for each of your predictor variables 
 
 From your exploratory data analysis, which variable will you use for the single variable models? Why?
 
+
+# SECTION 2 [REMOVE LATER] Mia
+
 ## kNN classification
 
 ### Single variable model
@@ -87,6 +92,9 @@ Make a kNN model using all your predictor variables
 ### Which model was best?
 
 Of your two kNN models which performed the best? Why? If it was the multivariate model was it worth the trade off of complexity? Why?
+
+
+# SECTION 3 [REMOVE LATER] - Grace
 
 ## Logistic Regression
 
