@@ -104,7 +104,32 @@ Make a logistic regression model using your best predictor variable
 
 #### Model
 
+```{r}
+#recipe
+log_rec<-
+  recipe(democracy~ BESTVAR , data=FullData_2025)
+
+#setting engine
+logit_mod <-
+  logistic_reg()|>
+  set_engine("glm")|>
+  set_mode("classification")
+
+# workflow
+glm_workflow <-
+  workflow() |>
+  add_recipe(log_rec)|>
+  add_model(logit_mod)
+
+# fitting model
+spam_fit <-
+  glm_workflow |>
+  fit(data = FullData_2025)
+```
+
 #### Equation and Graph of model
+
+*Equation:*
 
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
 
