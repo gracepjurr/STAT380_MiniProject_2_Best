@@ -22,47 +22,191 @@ Load your data here
 
 ```{r}
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
+
+democracy <- read_csv("Data/democracy2020.csv")#response variable
+CO2_emissions <-read_csv("Data/co2_cons.csv")
+gdp <-read_csv("Data/gdp_pcap.csv")
+humanDevIndx <-read_csv("Data/hdi_human_development_index.csv")
+poverty<-read_csv("Data/number_of_people_in_poverty.csv")
+gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ## Exploratory data analysis
 
-For this section graph and find statistics for each of your predictor variables vs the response. You do not need to look at the predictor variables individually
 
-# SECTION 1 [REMOVE LATER] Oyinda
+For this section graph and find statistics for each of your predictor variables vs the response. You do not need to look at the predictor variables individually
 
 ## Variable 1: CO2 Emissions
 
 ### Graph and description
 
+```{r}
+#| echo: true
+#| fig-align: center  
+
+#PLOT
+FullData_2025 |>
+  ggplot(aes(x = CO2, y = Democracy)) +
+  geom_boxplot() +
+  scale_x_log10(labels = scales::comma) +# using log because you cant see the data regularly
+  labs(x = "CO2 emissions (Million Tonnes, log scale)",
+       y = "Democracy",
+       title = "Democracy in 2025 vs. CO2 Emissions")
+```
+This boxplot compares CO2 emissions, in million tonnes, for democracies and non-democracies. The x axis is on a log scale, so each step to the right is 10 times bigger. The democracy box is farther to the right. The median is about 48 for democracies and about 14 for non-democracies. The middle half of democracies goes from about 14 to 200. For non-democracies, it goes from about 4 to 42. The boxes overlap a lot, so many countries in both groups have similar emissions. Still, the typical democracy emits more, and democracies are more spread out. Their whiskers go from about 0.6 up to about 5,500, and the USA is at the far end. Non-democracies go from about 0.2 up to about 700. They have one outlier at about 1,440, which is Russia. The log scale makes the biggest values look smaller than they are, so the table shows the real numbers. Overall, democracies tend to emit more CO2, but the two groups overlap a lot.The groups overlap a lot, so CO2 would not predict democracy well by itself.
+
 ### Stats and description
+
+```{r}
+
+Democracy_CO2_summary <- FullData_2025 |>
+  group_by(Democracy) |>
+  summarize(avg_co2 = mean(CO2 ),
+            sd_co2 = sd(CO2),
+            min_co2 = min(CO2),
+            max_co2 = max(CO2),
+            mdn_co2 = median(CO2),
+            iqr_co2 = IQR(CO2),
+            count = n())
+
+Democracy_CO2_summary
+
+FullData_2025 |># to find more information on the data
+  arrange(desc(CO2)) |>
+  select(name, Democracy, CO2) |>
+  head(8)
+```
+This table shows CO2 emissions, in million tonnes, for 73 democracies and 85 non-democracies. Democracies emit more. Their mean is about 256.2, and the mean for non-democracies is about 73.4. The medians show the same thing, at about 48.4 for democracies and about 14.1 for non-democracies. In both groups, the mean is about five times bigger than the median. This means a few very big emitters pull the means up, so the median shows a typical country better. Democracies are also more spread out. Their standard deviation is about 729.3 and their IQR is about 183.6. For non-democracies, these are about 193.2 and 37.0. The smallest values are tiny in both groups, about 0.6 for democracies and about 0.2 for non-democracies. The biggest values are very different. The top democracy is the USA at about 5,563.7. The top non-democracy is Russia at about 1,442.5. China is missing from the data, so the non-democracy numbers are probably too low. Overall, democracies tend to emit more CO2 and vary more, but this shows a link, not a cause.
 
 ## Variable 2: GDP per Capita
 
 ### Graph and description
+```{r}
+FullData_2025|>
+  ggplot(aes(x = GDP, y = Democracy)) +
+  geom_boxplot() +
+  scale_x_continuous(labels = scales::comma)+ # removes the statistical notation in the x axis
+  labs(x = "GDP per Capita in (US dollars)",
+       y = "Democracy",
+       title = "Democracy in 2025 vs. GDP per Capita, 2025)")
+```
+This boxplot compares GDP per capita, in US dollars, for democracies and non-democracies. The democracy box is far to the right of the non-democracy box. The median is about 42,000 for democracies and about 7,000 for non-democracies. The middle half of democracies goes from about 19,000 to 56,000. For non-democracies, it goes from about 3,000 to 15,000. The two boxes barely overlap, so most democracies are richer per person than most non-democracies. Democracies are also more spread out, because their box is much wider. Both groups have outliers on the high end. Democracies have three, from about 120,000 to 138,000. Non-democracies have six, from about 37,000 to 65,000. Some of these non-democracies are richer than the typical democracy. The non-democracy group is more skewed to the right, with most countries bunched on the left and a few rich ones far out. Overall, democracies tend to have a much higher GDP per capita. The boxes barely overlap, so GDP separates the groups well, but it is skewed.
 
 ### Stats and description
+
+```{r}
+Democracy_GDP_summary <- FullData_2025 |>
+  group_by(Democracy) |>
+  summarize(avg_gdp = mean(GDP),
+            sd_gdp = sd(GDP),
+            min_gdp = min(GDP),
+            max_gdp = max(GDP),
+            mdn_gdp = median(GDP),
+            iqr_gdp = IQR(GDP),
+            count = n())
+
+Democracy_GDP_summary
+```
+This table shows GDP per capita, in US dollars, for 73 democracies and 85 non-democracies. Democracies are much richer per person. Their mean is about 42,602, and the mean for non-democracies is about 11,740. That is about 3.6 times higher. The medians show an even bigger gap, at about 41,978 for democracies and about 7,143 for non-democracies. So the typical democracy has a GDP per capita almost six times higher. For democracies, the mean and median are almost the same, so the values are fairly balanced. For non-democracies, the mean is well above the median, and the standard deviation (about 12,864) is bigger than the mean. This means a few rich non-democracies pull the average up, while most are much poorer. Democracies are also more spread out. Their standard deviation is about 28,554 and their IQR is about 36,811. For non-democracies, these are about 12,864 and 11,758. The ranges overlap. The poorest democracy is at about 2,716, and the richest non-democracy is at about 64,966. That means some non-democracies are richer than the typical democracy. The richest democracy is at about 137,906, which is more than twice the richest non-democracy. Overall, democracies tend to have a much higher GDP per capita, but this shows a link, not a cause.
 
 ## Variable 3: Human Development Index
 
 ### Graph and description
 
+```{r}
+FullData_2025|>
+  ggplot(aes(x = HDI, y = Democracy)) +
+  geom_boxplot() +
+  labs(x = "Human Development Index",
+       y = "Democracy",
+       title = "Democracy in 2025 vs. Human Development Index")
+```
+This boxplot compares the Human Development Index (HDI) for democracies (Yes) and non-democracies (No). HDI is a score from 0 to 1, and a higher score means higher development. The democracy box sits far to the right of the non-democracy box. The median line for democracies is at about 0.88, and for non-democracies it is at about 0.63. The two boxes barely overlap. The democracy box runs from about 0.78 to 0.93, and the non-democracy box runs from about 0.52 to 0.75. The democracy box is narrower, so democracies are more alike in their scores. The non-democracy box is wider, so those countries vary more. The democracy median sits close to the right side of its box, and the lower whisker is long, reaching down to about 0.55. This shows that most democracies score high, with a few lower scorers. The non-democracy median is near the middle of its box, so the scores are spread more evenly, from about 0.41 to 0.90. There are no outlier dots in either group. Overall, the plot shows that democracies tend to have much higher human development than non-democracies.
+
 ### Stats and description
+
+```{r}
+Democracy_HDI_summary <- FullData_2025 |>
+  group_by(Democracy) |>
+  summarize(avg_hdi = mean(HDI),
+            sd_hdi = sd(HDI),
+            min_hdi = min(HDI),
+            max_hdi = max(HDI),
+            mdn_hdi = median(HDI),
+            iqr_hdi = IQR(HDI),
+            count = n())
+
+Democracy_HDI_summary
+```
+This table summarizes HDI for 73 democracies and 85 non-democracies. Democracies score higher. Their mean is about 0.845, compared with about 0.644 for non-democracies. The medians show the same gap, at about 0.878 for democracies and about 0.628 for non-democracies. That is a difference of about 0.25 in the median. In the democracy group, the mean is below the median, which points to left skew. A few lower scores pull the mean down. In the non-democracy group, the mean and median are close, so the values are more balanced. Democracies are also more consistent. Their standard deviation is about 0.104 and their IQR is about 0.154. For non-democracies, these are about 0.131 and 0.228. The ranges overlap. The lowest democracy scores about 0.550 and the highest scores about 0.972. The lowest non-democracy scores about 0.414 and the highest scores about 0.900. So the best non-democracy scores higher than the typical democracy, and the weakest democracy scores close to the typical non-democracy. Overall, democracies tend to have higher and more consistent human development. This shows a link, not a cause.The boxes barely overlap and there are no outliers, so HDI separates the groups best
 
 ## Variable 4: People in Poverty
 
 ### Graph and description
 
+```{r}
+FullData_2025 |>
+  ggplot(aes(x = Poverty, y = Democracy)) +
+  geom_boxplot() +
+  scale_x_log10(labels = scales::comma) +
+  labs(x = "People in Poverty (log scale)",
+       y = "Democracy",
+       title = "Democracy vs. People in Poverty, 2025")
+```
+This boxplot compares the number of people in poverty for democracies and non-democracies. The x axis is on a log scale, so each step to the right is 10 times bigger. This spreads out the small values, and now we can see the democracy box, which was squeezed against zero before. The democracy box is to the left of the non-democracy box. The median is about 48,600 for democracies and about 1.2 million for non-democracies. So the typical non-democracy has about 25 times more people in poverty. The boxes overlap a little, but most democracies have far fewer people in poverty. The non-democracy box is also wider, so those countries are more spread out. The numbers are counts of people, not percents, so big countries will have bigger numbers. This is part of why the values go from as small as 23 and 119 up to about 54 million for the top democracy and about 96 million for the top non-democracy. The log scale makes the biggest values look closer to the rest than they really are, so the table shows the true size. Overall, non-democracies tend to have more people in poverty, but the groups overlap, and population size likely plays a part. The groups overlap, and the numbers depend on country size, so it is a weak predictor.
+
 ### Stats and description
+
+```{r}
+Democracy_Poverty_summary <- FullData_2025 |>
+  group_by(Democracy) |>
+  summarize(avg_co2 = mean(Poverty),
+            sd_co2 = sd(Poverty),
+            min_co2 = min(Poverty),
+            max_co2 = max(Poverty),
+            mdn_co2 = median(Poverty),
+            iqr_co2 = IQR(Poverty),
+            count = n())
+
+Democracy_Poverty_summary
+
+```
+This table summarizes the number of people in poverty for 73 democracies and 85 non-democracies. Non-democracies have higher numbers. Their mean is about 7.9 million, compared with about 2.0 million for democracies. The medians show a much bigger gap. The median is about 1.23 million for non-democracies and only about 48,600 for democracies. So the typical non-democracy has about 25 times more people in poverty than the typical democracy. In both groups, the mean is far above the median. For non-democracies, it is about six times higher. For democracies, it is about forty times higher. A few very large countries pull the means up, so the median is a better measure of a typical country here. Non-democracies also vary more in the middle. Their IQR is about 8.0 million, compared with about 468,000 for democracies. But the standard deviation is large in both groups, about 16.4 million for non-democracies and about 7.2 million for democracies. In both cases, it is bigger than the mean, which is a sign of strong right skew. The ranges are wide. The smallest values are tiny, at 119 for non-democracies and 23 for democracies. The largest are about 95.6 million for non-democracies and about 54.2 million for democracies. Overall, non-democracies have more people in poverty, but a few huge countries drive the averages in both groups. This is a link, not a cause.
 
 ## Variable 5: Region
 
 ### Graph and description
 
+```{r}
+FullData_2025 |>
+  ggplot(aes(x = world_4region, fill = Democracy)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Region",
+       y = "Number of Countries",
+       fill = "Democracy",
+       title = "Democracy by Region, 2025")
+names(FullData_2025)
+```
+This bar chart shows how many countries in each world region are democracies and non-democracies in 2025. Africa has the most non-democracies, with about 41 countries, and only about 8 democracies. So roughly 16 percent of African countries are democracies. Europe is the opposite. It has about 33 democracies and only about 10 non-democracies. The Americas also lean toward democracy, with about 17 democracies and 8 non-democracies, or about 68 percent. Asia is the most mixed. It has about 26 non-democracies and 15 democracies, so about 37 percent are democracies. Africa and Europe have the biggest gaps between the two bars, and Asia has the smallest. The regions have different numbers of countries. Africa has about 49, the Americas about 25, Asia about 41, and Europe about 43. Overall, democracy is most common in Europe and the Americas, and least common in Africa.Democracy is much more common in Europe and the Americas than in Africa, so region is related to democracy
+
 ### Stats and description
+
+```{r}
+region_democracy_summary <- FullData_2025 |>
+  group_by(world_4region, Democracy) |>
+  summarize(count = n()) |>
+  mutate(percent = round(count / sum(count) * 100, 1))
+
+region_democracy_summary
+```
+
+This table shows how many countries in each world region are democracies and non-democracies. There are 158 countries in all, with 73 democracies and 85 non-democracies. Africa has the most non-democracies, with 41, and only 8 democracies. That means only about 16 percent of its 49 countries are democracies. Europe is the opposite. It has 33 democracies and 10 non-democracies, so about 77 percent of its 43 countries are democracies. The Americas also lean toward democracy, with 17 democracies and 8 non-democracies, which is 68 percent of 25 countries. Asia is the most mixed, with 26 non-democracies and 15 democracies, so about 37 percent of its 41 countries are democracies. Overall, democracy is most common in Europe and the Americas, and least common in Africa.
 
 ## Which variable for single variable models?
 
 From your exploratory data analysis, which variable will you use for the single variable models? Why?
+
+I will use HDI for the single variable models. HDI separates democracies from non-democracies better than the other variables. The median HDI is about 0.878 for democracies and about 0.628 for non-democracies, and the two boxes barely overlap. HDI has no outliers, and both groups have a similar spread. The other variables are harder to use. CO2 and Poverty are counts that depend on how big a country is, and they are very skewed with huge outliers. GDP per capita separates the groups well, but it is skewed and has high outliers. HDI already includes income, along with health and education.
 
 
 # SECTION 2 [REMOVE LATER] Mia
