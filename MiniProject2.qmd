@@ -23,6 +23,13 @@ Load your data here
 ```{r}
 # Data Compiled in separate QMD (Submitted in an earlier assignment)
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
+
+democracy <-read.csv("Data/democracy2020.csv")#response variable
+CO2_emissions <-read.csv("Data/co2_cons.csv")
+gdp <-read.csv("Data/gdp_pcap.csv")
+humanDevIndx <-read.csv("Data/hdi_human_development_index.csv")
+poverty<-read.csv("Data/number_of_people_in_poverty.csv")
+gapminder_2025<-read.csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ```{r}
@@ -242,7 +249,7 @@ I will use HDI for the single variable models. HDI separates democracies from no
 ## kNN classification
 
 ```{r}
-#Splitting Data: from lecture 12
+#Splitting Data
 
 #setting seed for reproducability
 set.seed(2005)
@@ -263,11 +270,11 @@ FullData_2025_test <- FullData_2025_parts |>
 list(FullData_2025_train, FullData_2025_test) |>
   map_int(nrow)
 
-#Cross Validation Folds: from lecture 13
+#Cross Validation Folds
 folds <- vfold_cv(FullData_2025_train, v = 5) #this makes the folds
 folds
 
-##This is from lecture 1516
+#Setting classification metrics
 classification_metrics <- metric_set(accuracy, yardstick::sensitivity,yardstick::specificity )
 ```
 
@@ -276,18 +283,18 @@ classification_metrics <- metric_set(accuracy, yardstick::sensitivity,yardstick:
 Make a kNN model using your best predictor variable
 
 ```{r}
-#Recipe: From lecture 14 + ai
+#Recipe
 knn_recipe_single <- recipe(Democracy ~ HDI, data = FullData_2025_train) |>
   step_string2factor(all_nominal_predictors()) |> #From ai
   step_normalize(all_numeric_predictors())|>
   step_dummy(all_nominal_predictors())
 
-#Specification: From lecture 14
+#Specification
 knn_spec_single <- nearest_neighbor(neighbors=tune(),  weight_func = "rectangular") |>
   set_engine("kknn")|>
   set_mode("classification")
 
-#Workflow: From elcture 14
+#Workflow
 knn_wf_single<-workflow()|>
   add_recipe(knn_recipe_single)|>
   add_model(knn_spec_single)
@@ -296,7 +303,7 @@ knn_wf_single<-workflow()|>
 #### Model tuning to find k
 
 ```{r}
-#Tuning Grid: From lecture 13
+#Tuning Grid
 knn_grid_single <- tibble(neighbors = seq(from=1, to=41, by=2))
 
 knn_cv_single <- tune_grid(
@@ -308,7 +315,7 @@ knn_cv_single <- tune_grid(
 cv_metrics_knn_single<-collect_metrics(knn_cv_single)
 cv_metrics_knn_single
 
-#Grabbing best k: From lecture 14
+#Grabbing best k
 best_k_single <- select_best(knn_cv_single, metric = "accuracy")
 best_k_single
 ```
@@ -326,7 +333,7 @@ knn_wf_single_best<-workflow()|>
   add_recipe(knn_recipe_single)|>
   add_model(knn_spec_single_best)
 
-#Fitting model: From lecture 14
+#Fitting model
 knn_fit_single <- 
   knn_wf_single_best |> 
   fit(data = FullData_2025_train)
@@ -390,7 +397,7 @@ knn_wf_all<-workflow()|>
 #### Model tuning to find k using cv.
 
 ```{r}
-#Tuning Grid: From lecture 13
+#Tuning Grid
 knn_grid_all <- tibble(neighbors = seq(from=1, to=41, by=2))
 
 knn_cv_all <- tune_grid(
@@ -420,7 +427,7 @@ knn_wf_all_best<-workflow()|>
   add_recipe(knn_recipe_all)|>
   add_model(knn_spec_all_best)
 
-#Fitting model: From lecture 14
+#Fitting model
 knn_fit_all <- 
   knn_wf_all_best |> 
   fit(data = FullData_2025_train)
