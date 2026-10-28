@@ -23,13 +23,6 @@ Load your data here
 ```{r}
 # Data Compiled in separate QMD (Submitted in an earlier assignment)
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
-
-democracy <-read.csv("Data/democracy2020.csv")#response variable
-CO2_emissions <-read.csv("Data/co2_cons.csv")
-gdp <-read.csv("Data/gdp_pcap.csv")
-humanDevIndx <-read.csv("Data/hdi_human_development_index.csv")
-poverty<-read.csv("Data/number_of_people_in_poverty.csv")
-gapminder_2025<-read.csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ```{r}
@@ -60,7 +53,6 @@ FullData_2025<-FullData_2025|>
 
 For this section graph and find statistics for each of your predictor variables vs the response. You do not need to look at the predictor variables individually
 
-# SECTION 1 \[REMOVE LATER\] Oyinda
 
 ## Variable 1: CO2 Emissions
 
@@ -244,7 +236,6 @@ From your exploratory data analysis, which variable will you use for the single 
 
 I will use HDI for the single variable models. HDI separates democracies from non-democracies better than the other variables. The median HDI is about 0.878 for democracies and about 0.628 for non-democracies, and the two boxes barely overlap. HDI has no outliers, and both groups have a similar spread. The other variables are harder to use. CO2 and Poverty are counts that depend on how big a country is, and they are very skewed with huge outliers. GDP per capita separates the groups well, but it is skewed and has high outliers. HDI already includes income, along with health and education.
 
-# SECTION 2 \[REMOVE LATER\] Mia
 
 ## kNN classification
 
@@ -470,7 +461,6 @@ Of your two kNN models which performed the best? Why? If it was the multivariate
 
 The multivariate knn classification model performed the best because it had an accuracy of 87.5% on the test data. It was worth the trade off of complexity in this case because the single variable model only had an accuracy of 78.1% on the test data. There is a \~10% discrepancy between the multivariate test data accuracy and the cross validation estimate, but this does not indicate that the model is overfitting since the test data accuracy is higher than the cross validation estimate.
 
-# SECTION 3 \[REMOVE LATER\] - Grace
 
 ## Logistic Regression
 
@@ -479,8 +469,6 @@ The multivariate knn classification model performed the best because it had an a
 Make a logistic regression model using your best predictor variable
 
 #### Model
-
-NOTE TO SELF: ASK WHETHER TO CREATE MODEL ON TRAINING DATA AND ACCURACY ON TESTING DATA
 
 ```{r}
 #recipe
@@ -703,7 +691,7 @@ We can evaluate the quality of the ROC from the area under the curve (AUC). From
 
 Of your two logistic regression models which performed the best? Why? If it was the multivariate model was it worth the trade off of complexity? Why?
 
-The *single variable* logistic regression model performed the best overall. We can see that both models held the same testing accuracy (0.81), but the Cross Validation accuracy for the single variable model (0.79) is higher than that of the multivariable model (0.75). This tells us that both models where fairly comparable in their accuracy performance; however, the single variable model performed better when it came to how well the model was able to generalize to unseen data from the CV folds.
+The *single variable* logistic regression model performed the best overall. We can see that both models held the same testing accuracy (81.25%), but the Cross Validation accuracy for the single variable model (77.81%) is higher than that of the multivariable model (74.62%). This tells us that both models where fairly comparable in their accuracy performance; however, the single variable model performed better when it came to how well the model was able to generalize to unseen data from the CV folds.
 
 On top of that, the AUC of the single variable model (0.94) is also higher than the AUC for the multivariable model (0.92). This is important since this metric tells us the model quality. Since the single variable model has a higher AUC, we can say that the model makes better predictions in comparison to the multivariable model.
 
@@ -713,6 +701,20 @@ Therefore, the single variable logistic regression model performed the best.
 
 Which model would you recommend the lab use? Why? Are there trade-offs between interpretability and model metrics?
 
+We recommend using the *KNN Multivariable Classification model* for the lab. We make this recommendation based upon its performance metrics. The KNN model has a higher testing accuracy (87.50%) and cross validation accuracy (77.08%) than the logistic regression model, which achieved a testing accuracy of 81.25% and cross validation accuracy of 74.62%.
+
+We should note, however, that while the KNN model has a better overall performance, the testing accuracy and the CV accuracy show a larger difference in percentage (approx. 10%) in comparison to the logistic regression model which only has as differnece of approximately 6.5%. This should caution us that some overfitting may be a potential issue with the KNN model, although no strong claims can be made at this time. Another trade-off with the KNN model comes from its complexity and interpretability. Since the KNN model uses all the predictor variables, it becomes more challenging to isolate, understand, and explain how the model makes individual  predictions. In contrast, the single logistic regression model is much simpler to follow since it only follows the relationship between HDI (predictor variable) and the probability of Democracy (response variable). 
+
+Overall, even with some of the trade-offs with the multivariable KNN classification model, we still recommend this model to be used in the lab. Its metrics are the best overall, and demonstrate that it is an effective model for the purposes of predicting the response variable (Democracy). 
+
 ## Your question
 
 You will write your own question about the data, create a data visualization that can help answer your question, and write an answer to your question. The question/visualization should explore the relationship between at least 2 of the variables in the dataset. Be sure you include both the question and the answer to your question based on the visualization you have created. It should be a different question than last mini-project.
+
+**QUESTION:**
+
+```{r}
+
+```
+
+**ANSWER:**
