@@ -185,6 +185,13 @@ roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC
 
 ```
 
+*p-value:*
+
+*Accuracy:*
+
+*CV for Overfitting:*
+
+*ROC & AUC:*
 
 ### All variable model
 
@@ -251,6 +258,14 @@ autoplot(roc_curve(test_results, truth = Democracy, `.pred_No`)) # ROC Graph
 roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC 
 
 ```
+
+*p-value:*
+
+*Accuracy:*
+
+*CV for Overfitting:*
+
+*ROC & AUC:*
 
 ### Which model was best?
 
