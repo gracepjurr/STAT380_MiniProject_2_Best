@@ -185,11 +185,11 @@ This boxplot compares the number of people in poverty for democracies and non-de
 Democracy_Poverty_summary <- FullData_2025 |>
   group_by(Democracy) |>
   summarize(avg_co2 = mean(Poverty),
-            sd_co2 = sd(Poverty),
-            min_co2 = min(Poverty),
-            max_co2 = max(Poverty),
-            mdn_co2 = median(Poverty),
-            iqr_co2 = IQR(Poverty),
+            sd_poverty = sd(Poverty),
+            min_poverty = min(Poverty),
+            max_poverty = max(Poverty),
+            mdn_poverty = median(Poverty),
+            iqr_poverty = IQR(Poverty),
             count = n())
 
 Democracy_Poverty_summary
