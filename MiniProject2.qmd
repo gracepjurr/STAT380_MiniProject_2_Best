@@ -1,10 +1,9 @@
 ---
 title: "MiniProject2"
 author: "Grace Rubio, Oyinda Sanni, Mia Mason"
-format: pdf 
-editor: visual   
-  markdown:      
-    wrap: 72
+format: html
+self-contained: true
+editor: visual
 ---
 
 ## Libraries and data load
@@ -22,6 +21,7 @@ Put whatever libraries you use here.
 Load your data here
 
 ```{r}
+# Data Compiled in separate QMD (Submitted in an earlier assignment)
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
 ```
 
