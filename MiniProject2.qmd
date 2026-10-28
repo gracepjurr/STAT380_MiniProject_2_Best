@@ -242,7 +242,7 @@ I will use HDI for the single variable models. HDI separates democracies from no
 ## kNN classification
 
 ```{r}
-#Splitting Data
+#Splitting Data: from lecture 12
 
 #setting seed for reproducability
 set.seed(2005)
@@ -263,38 +263,124 @@ FullData_2025_test <- FullData_2025_parts |>
 list(FullData_2025_train, FullData_2025_test) |>
   map_int(nrow)
 
-#Cross Validation: from lecture 13
+#Cross Validation Folds: from lecture 13
 folds <- vfold_cv(FullData_2025_train, v = 5) #this makes the folds
 folds
+
+##This is from lecture 1516
+classification_metrics <- metric_set(accuracy, yardstick::sensitivity,yardstick::specificity )
 ```
 
 ### Single variable model
 
 Make a kNN model using your best predictor variable
 
+```{r}
+#Recipe: From lecture 14 + ai
+knn_recipe_single <- recipe(Democracy ~ HDI, data = FullData_2025_train) |>
+  step_string2factor(all_nominal_predictors()) |> #From ai
+  step_normalize(all_numeric_predictors())|>
+  step_dummy(all_nominal_predictors())
+
+#Specification: From lecture 14
+knn_spec_single <- nearest_neighbor(neighbors=tune(),  weight_func = "rectangular") |>
+  set_engine("kknn")|>
+  set_mode("classification")
+
+#Workflow: From elcture 14
+knn_wf_single<-workflow()|>
+  add_recipe(knn_recipe_single)|>
+  add_model(knn_spec_single)
+```
+
 #### Model tuning to find k
+
+```{r}
+#Tuning Grid: From lecture 13
+knn_grid_single <- tibble(neighbors = seq(from=1, to=41, by=2))
+
+knn_cv_single <- tune_grid(
+  knn_wf_single,
+  resamples = folds,
+  grid = knn_grid_single,
+  metrics = classification_metrics
+)
+cv_metrics_knn_single<-collect_metrics(knn_cv_single)
+cv_metrics_knn_single
+
+#Grabbing best k: From lecture 14
+best_k_single <- select_best(knn_cv_single, metric = "accuracy")
+best_k_single
+```
 
 #### Model for best k
 
+```{r}
+#Specification for best k
+knn_spec_single_best <- nearest_neighbor(neighbors=25, weight_func = "rectangular") |>
+  set_engine("kknn")|>
+  set_mode("classification")
+
+#Workflow for best k
+knn_wf_single_best<-workflow()|>
+  add_recipe(knn_recipe_single)|>
+  add_model(knn_spec_single_best)
+
+#Fitting model: From lecture 14
+knn_fit_single <- 
+  knn_wf_single_best |> 
+  fit(data = FullData_2025_train)
+knn_fit_single
+```
+
 #### Model evaluation-accuracy, cv for overfitting
+
+```{r}
+#Accuracy and overfitting assessment
+
+#Accuracy
+test_results_knn_single <- augment(knn_fit_single, new_data = FullData_2025_test)
+
+test_knn_metrics_single<-accuracy(test_results_knn_single, truth = Democracy, estimate = .pred_class)
+
+test_knn_metrics_single
+
+#CV overfitting check
+cv_best_k_single=cv_metrics_knn_single|>
+  filter(neighbors==25)
+
+combined_metrics_knn_single <- test_knn_metrics_single |>
+  select(.metric, knn_estimate=.estimate) |>
+  left_join(
+    cv_best_k_single |> select(.metric, cvknn_estimate = mean),
+    by = ".metric"
+  ) |>
+  rename(
+    `Test Set` = knn_estimate,
+    `CV Mean`        = cvknn_estimate
+  )
+
+combined_metrics_knn_single
+```
 
 ### All variable model
 
 Make a kNN model using all your predictor variables
 
 ```{r}
-#Recipe
+#Recipe: From lecture 14 + ai
 knn_recipe_all <- recipe(Democracy ~ ., data = FullData_2025_train) |>
-  step_string2factor(all_nominal_predictors()) |> 
+  update_role(geo, name, new_role = "ID") |> #From ai
+  step_string2factor(all_nominal_predictors()) |> #From ai
   step_normalize(all_numeric_predictors())|>
   step_dummy(all_nominal_predictors())
 
-#Specification
+#Specification: From lecture 14
 knn_spec_all <- nearest_neighbor(neighbors=tune(),  weight_func = "rectangular") |>
   set_engine("kknn")|>
   set_mode("classification")
 
-#Workflow
+#Workflow: From elcture 14
 knn_wf_all<-workflow()|>
   add_recipe(knn_recipe_all)|>
   add_model(knn_spec_all)
@@ -307,10 +393,6 @@ knn_wf_all<-workflow()|>
 #Tuning Grid: From lecture 13
 knn_grid_all <- tibble(neighbors = seq(from=1, to=41, by=2))
 
-
-##This is from lecture 1516
-classification_metrics <- metric_set(accuracy, yardstick::sensitivity,yardstick::specificity )
-
 knn_cv_all <- tune_grid(
   knn_wf_all,
   resamples = folds,
@@ -320,7 +402,7 @@ knn_cv_all <- tune_grid(
 cv_metrics_knn_all<-collect_metrics(knn_cv_all)
 cv_metrics_knn_all
 
-#Grabbing best k
+#Grabbing best k: From lecture 14
 best_k_all <- select_best(knn_cv_all, metric = "accuracy")
 best_k_all
 ```
@@ -328,18 +410,58 @@ best_k_all
 #### Model for best k
 
 ```{r}
+#Specification for best k
+knn_spec_all_best <- nearest_neighbor(neighbors=7,  weight_func = "rectangular") |>
+  set_engine("kknn")|>
+  set_mode("classification")
 
+#Workflow for best k
+knn_wf_all_best<-workflow()|>
+  add_recipe(knn_recipe_all)|>
+  add_model(knn_spec_all_best)
+
+#Fitting model: From lecture 14
+knn_fit_all <- 
+  knn_wf_all_best |> 
+  fit(data = FullData_2025_train)
+knn_fit_all
 ```
 
 #### Model evaluation-accuracy, cv for overfitting
 
 ```{r}
+#Accuracy and overfitting assessment
 
+#Accuracy
+test_results_knn_all <- augment(knn_fit_all, new_data = FullData_2025_test)
+
+test_knn_metrics_all<-accuracy(test_results_knn_all, truth = Democracy, estimate = .pred_class)
+
+test_knn_metrics_all
+
+#CV overfitting check
+cv_best_k_all=cv_metrics_knn_all|>
+  filter(neighbors==7)
+
+combined_metrics_knn_all <- test_knn_metrics_all |>
+  select(.metric, knn_estimate=.estimate) |>
+  left_join(
+    cv_best_k_all |> select(.metric, cvknn_estimate = mean),
+    by = ".metric"
+  ) |>
+  rename(
+    `Test Set` = knn_estimate,
+    `CV Mean`        = cvknn_estimate
+  )
+
+combined_metrics_knn_all
 ```
 
 ### Which model was best?
 
 Of your two kNN models which performed the best? Why? If it was the multivariate model was it worth the trade off of complexity? Why?
+
+The multivariate knn classification model performed the best because it had an accuracy of 87.5% on the test data. It was worth the trade off of complexity in this case because the single variable model only had an accuracy of 78.1% on the test data. There is a \~10% discrepancy between the multivariate test data accuracy and the cross validation estimate, but this does not indicate that the model is overfitting since the test data accuracy is higher than the cross validation estimate.
 
 # SECTION 3 \[REMOVE LATER\] - Grace
 
