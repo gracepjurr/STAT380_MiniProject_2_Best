@@ -23,13 +23,6 @@ Load your data here
 
 ```{r}
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
-
-democracy <-read.csv("Data/democracy2020.csv")#response variable
-CO2_emissions <-read.csv("Data/co2_cons.csv")
-gdp <-read.csv("Data/gdp_pcap.csv")
-humanDevIndx <-read.csv("Data/hdi_human_development_index.csv")
-poverty<-read.csv("Data/number_of_people_in_poverty.csv")
-gapminder_2025<-read.csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ```{r}
@@ -485,7 +478,7 @@ NOTE TO SELF: ASK WHETHER TO CREATE MODEL ON TRAINING DATA AND ACCURACY ON TESTI
 ```{r}
 #recipe
 log_rec<-
-  recipe(Democracy~ HDI, data=FullData_2025)
+  recipe(Democracy~ HDI, data=FullData_2025_train)
 
 #setting engine
 logit_mod <-
@@ -502,16 +495,16 @@ glm_workflow <-
 # fitting model
 dem_fit <-
   glm_workflow |>
-  fit(data = FullData_2025)
+  fit(data = FullData_2025_train)
 ```
 
 #### Equation and Graph of model
 
-*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-9.901375+12.927716x_{HDI})$
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-10.09596+13.37363x_{HDI})$
 
 ```{r}
 # GRAPH
-FullData_bin <- FullData_2025 |>
+FullData_bin <- FullData_2025_train |>
   mutate(bin_dem=if_else(Democracy=="Yes",1,0))
 
 ggplot(FullData_bin, aes(x = HDI, y = bin_dem)) + 
@@ -534,15 +527,15 @@ ggplot(FullData_bin, aes(x = HDI, y = bin_dem)) +
 tidy(dem_fit) 
 
 # Accuracy
-test_results <- augment(dem_fit, new_data = FullData_2025) # adding original data
+test_results <- augment(dem_fit, new_data = FullData_2025_test) # adding original data
 
 test_metric<-test_results|>
   accuracy(truth = Democracy, estimate = .pred_class)
 test_metric
 
 # CV for Overfitting
-set.seed(1776)
-folds <- vfold_cv(FullData_2025, v = 5) #this makes the folds
+set.seed(2005)
+folds <- vfold_cv(FullData_2025_train, v = 5) #this makes the folds
 class_met=metric_set(accuracy)
 
 glm_dem_cv <- 
@@ -561,23 +554,23 @@ roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC
 
 **p-value:**
 
-$p-value=1.328836e-10$
+$p-value=1.129828e-08$
 
-Since the p-value of the `HDI` is very small (threshold: $p<=0.05$), we can say that the slope is significantly different from 0. Therefore it is *statistically significant*.
+Since the p-value of the `HDI` very small (threshold: $p<=0.05$), we can say that the slope is significantly different from 0. Therefore it is *statistically significant*.
 
-**Accuracy:** 0.7911392
+**Accuracy:** 0.8125
 
-This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 79.11% of cases.
+This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 81.25% of cases.
 
 **CV for Overfitting:**
 
-From our CV, we got 0.7909274. We can say that it is unlikely that our model overfit as 0.7909274 is reasonably close to 0.7911392.
+From our CV, we got 0.7781538. We can say that it is unlikely that our model overfit as 0.7781538 is reasonably close to 0.8125.
 
 **ROC & AUC:**
 
-$AUC=0.8786463$
+$AUC=0.9365079$
 
-we can evaluate the quality of the ROC from the area under the curve (AUC). Here we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess.
+We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess and is somewhat close to the upper edge of the graph. The AUC tells us that the area under the curve is approximately 0.94 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
 
 ### All variable model
 
@@ -586,9 +579,13 @@ Make a logistic regression model using all your predictor variables
 #### Model
 
 ```{r}
+# Create list of only predictor variables
+predictors <- colnames(FullData_2025)[4:8]
+
 #recipe
 log_rec<-
-  recipe(Democracy~., data=FullData_2025)
+  recipe(as.formula(paste("Democracy ~", paste(predictors, collapse = " + "))),
+         data=FullData_2025_train)
 
 #setting engine
 logit_mod <-
@@ -605,13 +602,13 @@ glm_workflow2 <-
 # fitting model
 demMulti_fit <-
   glm_workflow2 |>
-  fit(data = FullData_2025)
+  fit(data = FullData_2025_train)
 
 ```
 
 #### Equation of model
 
-*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=Intercept+x_{HDI}+x_{GDP}+x_{Poverty}+x_{CO2}+x_{americas}+x_{asias}+x_{europe})$
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-12.59693+17.45064x_{HDI}+0.000007621737 x_{GDP}+0.00000002082547    x_{Poverty}+0.0006021593x_{CO2}-0.04838529x_{americas}-1.787578x_{asia}-1.825651x_{europe})$
 
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
 
@@ -620,15 +617,15 @@ demMulti_fit <-
 tidy(demMulti_fit) 
 
 # Accuracy
-test_results <- augment(demMulti_fit, new_data = FullData_2025) # adding original data
+test_results <- augment(demMulti_fit, new_data = FullData_2025_test) # adding original data
 
 test_metric<-test_results|>
   accuracy(truth = Democracy, estimate = .pred_class)
 test_metric
 
 # CV for Overfitting
-set.seed(1776)
-folds <- vfold_cv(FullData_2025, v = 5) #this makes the folds
+set.seed(2005)
+folds <- vfold_cv(FullData_2025_train, v = 5) #this makes the folds
 class_met=metric_set(accuracy)
 
 glm_demMulti_cv <- 
@@ -645,17 +642,65 @@ roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC
 
 ```
 
-*p-value:*
+**p-value:**
 
-*Accuracy:*
+*Full Model:* $p-value=0.0003392719$
 
-*CV for Overfitting:*
+Since the p-value of the model is very small (threshold: $p<=0.05$), we can say that there is at least one predictor variable that is significantly different from 0. Therefore it is *statistically significant*.
 
-*ROC & AUC:*
+*CO2:* $p-value=0.4498042290$
+
+Since the p-value of the `CO2` is not considered small (threshold: $p<=0.05$), we *cannot* say that the slope is significantly different from 0. Therefore it is NOT *statistically significant*.
+
+*GDP:* $0.7221149867$
+
+Since the p-value of the `GDP` is not considered small (threshold: $p<=0.05$), we *cannot* say that the slope is significantly different from 0. Therefore it is NOT *statistically significant*.
+
+*HDI:* $p-value=0.0012223916$
+
+Since the p-value of the `HDI` very small (threshold: $p<=0.05$), we can say that the slope is significantly different from 0. Therefore it is *statistically significant*.
+
+*Poverty:* $p-value=0.3670983647$
+
+Since the p-value of the `Poverty` is not considered small (threshold: $p<=0.05$), we *cannot* say that the slope is significantly different from 0. Therefore it is NOT *statistically significant*.
+
+*Regions: NOTE-* As long as one of the categorical indicators has slope significantly different from zero, then we include in the model.
+
+*americas:* $p-value=0.9511431885$
+
+Since the p-value of the `americas` region is not considered small (threshold: $p<=0.05$), we *cannot* say that the slope for `americas` region vs `africa` region is significantly different from zero.
+
+*asia:* $p-value=0.0372680967$
+
+Since the p-value of the `asia` region is very small (threshold: $p<=0.05$), we can say that the slope for `asia` region vs `africa` region is significantly different from zero.
+
+*europe:* $p-value=0.0775613480$
+
+Since the p-value of the `europe` region is not considered small (threshold: $p<=0.05$), we *cannot* say that the slope for `europe` region vs `africa` region is significantly different from zero.
+
+**Accuracy:** 0.8125
+
+This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 81.25% of cases.
+
+**CV for Overfitting:**
+
+From our CV, we got 0.7461538. We can see that there is a larger difference compared to our testing accuracy of 0.7461538. This difference may suggest some amount of overfitting; however, it is not sufficient on its own to say that the model overfit.
+
+**ROC & AUC:**
+
+$AUC=0.9206349$
+
+We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess and is somewhat close to the upper edge of the graph. The AUC tells us that the area under the curve is approximately 0.92 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
 
 ### Which model was best?
 
 Of your two logistic regression models which performed the best? Why? If it was the multivariate model was it worth the trade off of complexity? Why?
+
+The *single variable* logistic regression model performed the best overall. We can see that both models held the same testing accuracy (0.81), but the Cross Validation accuracy for the single variable model (0.79) is higher than that of the multivariable model (0.75). This tells us that both models where fairly comparable in their accuracy performance; however, the single variable model performed better when it came to how well the model was able to generalize to unseen data from the CV folds.
+
+On top of that, the AUC of the single variable model (0.94) is also higher than the AUC for the multivariable model (0.92). This is important since this metric tells us the model quality. Since the single variable model has a higher AUC, we can say that the model makes better predictions in comparison to the multivariable model.
+
+Therefore, the single variable logistic regression model performed the best.
 
 ## Best model
 
