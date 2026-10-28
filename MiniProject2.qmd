@@ -24,12 +24,12 @@ Load your data here
 ```{r}
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
 
-democracy <- read_csv("Data/democracy2020.csv")#response variable
-CO2_emissions <-read_csv("Data/co2_cons.csv")
-gdp <-read_csv("Data/gdp_pcap.csv")
-humanDevIndx <-read_csv("Data/hdi_human_development_index.csv")
-poverty<-read_csv("Data/number_of_people_in_poverty.csv")
-gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
+democracy <-read.csv("Data/democracy2020.csv")#response variable
+CO2_emissions <-read.csv("Data/co2_cons.csv")
+gdp <-read.csv("Data/gdp_pcap.csv")
+humanDevIndx <-read.csv("Data/hdi_human_development_index.csv")
+poverty<-read.csv("Data/number_of_people_in_poverty.csv")
+gapminder_2025<-read.csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ## Exploratory data analysis
