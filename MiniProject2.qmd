@@ -4,7 +4,7 @@ author: "Grace Rubio, Oyinda Sanni, Mia Mason"
 format: pdf 
 editor: visual   
   markdown:      
-    wrap: 72 
+    wrap: 72
 ---
 
 ## Libraries and data load
@@ -16,19 +16,27 @@ Put whatever libraries you use here.
 #| include: false
 #| library(tidyverse)
 #| library(tidymodels)
+#| library(kknn)
 ```
 
 Load your data here
 
 ```{r}
 FullData_2025 <- read.csv("Data/FullData_2025.csv")
+
+democracy <- read_csv("Data/democracy2020.csv")#response variable
+CO2_emissions <-read_csv("Data/co2_cons.csv")
+gdp <-read_csv("Data/gdp_pcap.csv")
+humanDevIndx <-read_csv("Data/hdi_human_development_index.csv")
+poverty<-read_csv("Data/number_of_people_in_poverty.csv")
+gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
 ## Exploratory data analysis
 
 For this section graph and find statistics for each of your predictor variables vs the response. You do not need to look at the predictor variables individually
 
-# SECTION 1 [REMOVE LATER] Oyinda
+# SECTION 1 \[REMOVE LATER\] Oyinda
 
 ## Variable 1: CO2 Emissions
 
@@ -64,10 +72,36 @@ For this section graph and find statistics for each of your predictor variables 
 
 From your exploratory data analysis, which variable will you use for the single variable models? Why?
 
-
-# SECTION 2 [REMOVE LATER] Mia
+# SECTION 2 \[REMOVE LATER\] Mia
 
 ## kNN classification
+
+```{r}
+#Splitting Data
+
+#setting seed for reproducability
+set.seed(2005)
+
+#making split
+FullData_2025_parts <- FullData_2025 |> 
+  initial_split(prop = 0.8)
+
+#getting training data
+FullData_2025_train <- FullData_2025_parts |>
+  training() 
+
+#getting testing data
+FullData_2025_test <- FullData_2025_parts |>
+  testing() 
+
+#checking sizes could do seperately and avoid list
+list(FullData_2025_train, FullData_2025_test) |>
+  map_int(nrow)
+
+#Cross Validation: from lecture 13
+folds <- vfold_cv(FullData_2025_train, v = 5) #this makes the folds
+folds
+```
 
 ### Single variable model
 
@@ -83,18 +117,66 @@ Make a kNN model using your best predictor variable
 
 Make a kNN model using all your predictor variables
 
+```{r}
+#Recipe
+knn_recipe_all <- recipe(Democracy ~ ., data = FullData_2025_train) |>
+  step_string2factor(all_nominal_predictors()) |> 
+  step_normalize(all_numeric_predictors())|>
+  step_dummy(all_nominal_predictors())
+
+#Specification
+knn_spec_all <- nearest_neighbor(neighbors=tune(),  weight_func = "rectangular") |>
+  set_engine("kknn")|>
+  set_mode("classification")
+
+#Workflow
+knn_wf_all<-workflow()|>
+  add_recipe(knn_recipe_all)|>
+  add_model(knn_spec_all)
+
+```
+
 #### Model tuning to find k using cv.
+
+```{r}
+#Tuning Grid: From lecture 13
+knn_grid_all <- tibble(neighbors = seq(from=1, to=41, by=2))
+
+
+##This is from lecture 1516
+classification_metrics <- metric_set(accuracy, yardstick::sensitivity,yardstick::specificity )
+
+knn_cv_all <- tune_grid(
+  knn_wf_all,
+  resamples = folds,
+  grid = knn_grid_all,
+  metrics = classification_metrics
+)
+cv_metrics_knn_all<-collect_metrics(knn_cv_all)
+cv_metrics_knn_all
+
+#Grabbing best k
+best_k_all <- select_best(knn_cv_all, metric = "accuracy")
+best_k_all
+```
 
 #### Model for best k
 
+```{r}
+
+```
+
 #### Model evaluation-accuracy, cv for overfitting
+
+```{r}
+
+```
 
 ### Which model was best?
 
 Of your two kNN models which performed the best? Why? If it was the multivariate model was it worth the trade off of complexity? Why?
 
-
-# SECTION 3 [REMOVE LATER] - Grace
+# SECTION 3 \[REMOVE LATER\] - Grace
 
 ## Logistic Regression
 
