@@ -104,10 +104,13 @@ Make a logistic regression model using your best predictor variable
 
 #### Model
 
+NOTE TO SELF: ADD IN CODE IN DATA SPLIT THAT MAKES THE RESPONSE VARIABLE A FACTOR
+NOTE TO SELF: ASK WHETHER TO CREATE MODEL ON TRAINING DATA AND ACCURACY ON TESTING DATA
+
 ```{r}
 #recipe
 log_rec<-
-  recipe(democracy~ BESTVAR , data=FullData_2025)
+  recipe(Democracy~ <BESTVAR> , data=FullData_2025)
 
 #setting engine
 logit_mod <-
@@ -122,7 +125,7 @@ glm_workflow <-
   add_model(logit_mod)
 
 # fitting model
-spam_fit <-
+dem_fit <-
   glm_workflow |>
   fit(data = FullData_2025)
 ```
@@ -131,7 +134,57 @@ spam_fit <-
 
 *Equation:*
 
+```{r}
+# GRAPH
+FullData_bin <- FullData_2025 |>
+  mutate(bin_dem=if_else(Democracy=="Yes",1,0))
+
+ggplot(FullData_bin, aes(x = <BESTVAR>, y = bin_dem)) + 
+  geom_point(
+    position = position_jitter(width = 0, height = 0.05), 
+    alpha = 0.5
+  ) + 
+  geom_smooth(
+    method = "glm", method.args = list(family = "binomial"), 
+    color = "dodgerblue", lty = 2, se = FALSE
+  ) + 
+  geom_hline(aes(yintercept = 0.5), linetype = 3) 
+
+```
+
+
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
+
+```{r}
+# p-value
+tidy(dem_fit) 
+
+# Accuracy
+test_results <- augment(dem_fit, new_data = FullData_2025) # adding original data
+
+test_metric<-test_results|>
+  accuracy(truth = Democracy, estimate = .pred_class)
+test_metric
+
+# CV for Overfitting
+set.seed(1776)
+folds <- vfold_cv(FullData_2025, v = 5) #this makes the folds
+class_met=metric_set(accuracy)
+
+glm_dem_cv <- 
+  glm_workflow |> 
+  fit_resamples(resamples = folds,
+    metrics = class_met)
+
+cv_metrics<-collect_metrics(glm_dem_cv)
+cv_metrics
+
+# ROC & AUC
+autoplot(roc_curve(test_results, truth = Democracy, `.pred_No`)) # ROC Graph
+roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC 
+
+```
+
 
 ### All variable model
 
@@ -139,9 +192,65 @@ Make a logistic regression model using all your predictor variables
 
 #### Model
 
+```{r}
+#recipe
+log_rec<-
+  recipe(Democracy~., data=FullData_2025)
+
+#setting engine
+logit_mod <-
+  logistic_reg()|>
+  set_engine("glm")|>
+  set_mode("classification")
+
+# workflow
+glm_workflow2 <-
+  workflow() |>
+  add_recipe(log_rec)|>
+  add_model(logit_mod)
+
+# fitting model
+demMulti_fit <-
+  glm_workflow2 |>
+  fit(data = FullData_2025)
+
+```
+
 #### Equation of model
 
+*Equation:*
+
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
+
+```{r}
+# p-value
+tidy(demMulti_fit) 
+
+# Accuracy
+test_results <- augment(demMulti_fit, new_data = FullData_2025) # adding original data
+
+test_metric<-test_results|>
+  accuracy(truth = Democracy, estimate = .pred_class)
+test_metric
+
+# CV for Overfitting
+set.seed(1776)
+folds <- vfold_cv(FullData_2025, v = 5) #this makes the folds
+class_met=metric_set(accuracy)
+
+glm_demMulti_cv <- 
+  glm_workflow2 |> 
+  fit_resamples(resamples = folds,
+    metrics = class_met)
+
+cv_metrics<-collect_metrics(glm_demMulti_cv)
+cv_metrics
+
+# ROC & AUC
+autoplot(roc_curve(test_results, truth = Democracy, `.pred_No`)) # ROC Graph
+roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC 
+
+```
 
 ### Which model was best?
 
