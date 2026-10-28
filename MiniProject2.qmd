@@ -31,6 +31,30 @@ poverty<-read_csv("Data/number_of_people_in_poverty.csv")
 gapminder_2025<-read_csv("Data/gapminder_2025.csv") # QUALITATIVE (regions) 
 ```
 
+```{r}
+# Clean Data [Helpful for graphs and Models]
+FullData_2025 <- FullData_2025|>
+  drop_na()
+
+# Make response variable a Factor [Helpful for LOGISTIC REG]
+FullData_2025<-FullData_2025|>
+  mutate(Democracy=as.factor(Democracy))
+```
+
+**NOTE REGARDING DATA:** Please note that the data for each variable was collected from the last year provided in their respective datasets. For our purposes, we will be treated all variables as being collected from the year 2025 regardless of their most recent data. Below are the *actual* years each column was collected from:
+
+*Democracy:* 2020
+
+*CO2 Emissions:* 2022
+
+*GDP per Capita:* 2025
+
+*Human Development Index:* 2023
+
+*People in Poverty:* 2025
+
+*Gapminder Regions:* 2025
+
 ## Exploratory data analysis
 
 
@@ -248,13 +272,12 @@ Make a logistic regression model using your best predictor variable
 
 #### Model
 
-NOTE TO SELF: ADD IN CODE IN DATA SPLIT THAT MAKES THE RESPONSE VARIABLE A FACTOR
 NOTE TO SELF: ASK WHETHER TO CREATE MODEL ON TRAINING DATA AND ACCURACY ON TESTING DATA
 
 ```{r}
 #recipe
 log_rec<-
-  recipe(Democracy~ <BESTVAR> , data=FullData_2025)
+  recipe(Democracy~ HDI, data=FullData_2025)
 
 #setting engine
 logit_mod <-
@@ -276,14 +299,14 @@ dem_fit <-
 
 #### Equation and Graph of model
 
-*Equation:*
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-9.901375+12.927716x_{HDI})$
 
 ```{r}
 # GRAPH
 FullData_bin <- FullData_2025 |>
   mutate(bin_dem=if_else(Democracy=="Yes",1,0))
 
-ggplot(FullData_bin, aes(x = <BESTVAR>, y = bin_dem)) + 
+ggplot(FullData_bin, aes(x = HDI, y = bin_dem)) + 
   geom_point(
     position = position_jitter(width = 0, height = 0.05), 
     alpha = 0.5
@@ -298,6 +321,7 @@ ggplot(FullData_bin, aes(x = <BESTVAR>, y = bin_dem)) +
 
 
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
+
 
 ```{r}
 # p-value
@@ -329,13 +353,27 @@ roc_auc(test_results, truth = Democracy, `.pred_No`) # AUC
 
 ```
 
-*p-value:*
+**p-value:** 
 
-*Accuracy:*
+$p-value=1.328836e-10$
 
-*CV for Overfitting:*
+Since the p-value of the `HDI` is very small (threshold: $p<=0.05$), we
+can say that the slope is significantly different from 0. Therefore it
+is *statistically significant*.
 
-*ROC & AUC:*
+**Accuracy:** 0.7911392		
+
+This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 79.11% of cases. 
+
+**CV for Overfitting:** 
+
+From our CV, we got 0.7909274. We can say that it is unlikely that our model overfit as 0.7909274	is reasonably close to 0.7911392.
+
+**ROC & AUC:**
+
+$AUC=0.8786463$
+
+we can evaluate the quality of the ROC from the area under the curve (AUC). Here we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess. 
 
 ### All variable model
 
@@ -369,7 +407,7 @@ demMulti_fit <-
 
 #### Equation of model
 
-*Equation:*
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=Intercept+x_{HDI}+x_{GDP}+x_{Poverty}+x_{CO2}+x_{americas}+x_{asias}+x_{europe})$
 
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
 
