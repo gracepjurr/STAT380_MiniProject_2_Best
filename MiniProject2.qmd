@@ -13,9 +13,9 @@ Put whatever libraries you use here.
 ```{r}
 #| label: setup 
 #| include: false
-#| library(tidyverse)
-#| library(tidymodels)
-#| library(kknn)
+library(tidyverse)
+library(tidymodels)
+library(kknn)
 ```
 
 Load your data here
@@ -495,7 +495,7 @@ dem_fit <-
 
 #### Equation and Graph of model
 
-*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-10.09596+13.37363x_{HDI})$
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}})=-10.09596+13.37363x_{HDI}$
 
 ```{r}
 # GRAPH
@@ -555,7 +555,7 @@ Since the p-value of the `HDI` very small (threshold: $p<=0.05$), we can say tha
 
 **Accuracy:** 0.8125
 
-This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 81.25% of cases.
+This tells us that our current model correctly classified approximately 81.25% of cases in the test set for our response variable (Democracy).
 
 **CV for Overfitting:**
 
@@ -565,7 +565,7 @@ From our CV, we got 0.7781538. We can say that it is unlikely that our model ove
 
 $AUC=0.9365079$
 
-We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess and is somewhat close to the upper edge of the graph. The AUC tells us that the area under the curve is approximately 0.94 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
+We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model can effectively discriminate between the `democracy` and `no democracy` classes and overall performs better than a 50/50 guess. The AUC is the area under the curve and is approximately 0.94 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
 
 ### All variable model
 
@@ -603,7 +603,7 @@ demMulti_fit <-
 
 #### Equation of model
 
-*Equation:* $log(\frac{\hat{p}}{1-\hat{p}}=-12.59693+17.45064x_{HDI}+0.000007621737 x_{GDP}+0.00000002082547    x_{Poverty}+0.0006021593x_{CO2}-0.04838529x_{americas}-1.787578x_{asia}-1.825651x_{europe})$
+*Equation:* $log(\frac{\hat{p}}{1-\hat{p}})=-12.59693+17.45064x_{HDI}+0.000007621737 x_{GDP}+0.00000002082547    x_{Poverty}+0.0006021593x_{CO2}-0.04838529x_{americas}-1.787578x_{asia}-1.825651x_{europe}$
 
 #### Model evaluation-p-values, accuracy, cv for overfitting, roc, auc
 
@@ -675,7 +675,7 @@ Since the p-value of the `europe` region is not considered small (threshold: $p<
 
 **Accuracy:** 0.8125
 
-This tells us that our current model correctly identifies true outcomes (democracy=Yes) for approximately 81.25% of cases.
+This tells us that our current model correctly classified approximately 81.25% of cases in the test set for our response variable (Democracy).
 
 **CV for Overfitting:**
 
@@ -685,7 +685,7 @@ From our CV, we got 0.7461538. We can see that there is a larger difference comp
 
 $AUC=0.9206349$
 
-We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model performs better than a 50/50 guess and is somewhat close to the upper edge of the graph. The AUC tells us that the area under the curve is approximately 0.92 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
+We can evaluate the quality of the ROC from the area under the curve (AUC). From the graph we can see that the ROC is pretty good as it is above the 0.5 threshold which means the model can effectively discriminate between the `democracy` and `no democracy` classes and overall performs better than a 50/50 guess. The AUC is the area under the curve and is approximately 0.92 which tells us that the performance of the model is quite strong since it is close to AUC=1.0 which is a model that makes perfect predictions.
 
 ### Which model was best?
 
@@ -693,7 +693,7 @@ Of your two logistic regression models which performed the best? Why? If it was 
 
 The *single variable* logistic regression model performed the best overall. We can see that both models held the same testing accuracy (81.25%), but the Cross Validation accuracy for the single variable model (77.81%) is higher than that of the multivariable model (74.62%). This tells us that both models where fairly comparable in their accuracy performance; however, the single variable model performed better when it came to how well the model was able to generalize to unseen data from the CV folds.
 
-On top of that, the AUC of the single variable model (0.94) is also higher than the AUC for the multivariable model (0.92). This is important since this metric tells us the model quality. Since the single variable model has a higher AUC, we can say that the model makes better predictions in comparison to the multivariable model.
+On top of that, the AUC of the single variable model (0.94) is also higher than the AUC for the multivariable model (0.92). This is important since this metric tells us the model quality. Since the single variable model has a higher AUC, we can say that the model makes stronger predictions in comparison to the multivariable model.
 
 Therefore, the single variable logistic regression model performed the best.
 
@@ -734,4 +734,4 @@ GDP_summary|>
   ) 
 ```
 
-**ANSWER:** From the above graph, we can see that democracies tend to have higher average log GDP whereas countries that do NOT have democracy generally have a lower average log GDP in comparison across all four regions. This graph also allows us to look into the relationship between the regions themselves and their log GDP. We can see that Europe and the Americas both have higher average Log GDP for democratic countries compared to countries in Asia and Africa. On the other hand, Europe and Asia have higher average log GDP for nondemocratic countries compared to countries in the Americas and Africa. Europe has the highest average log GDP per capita for both countries with and without democracy compared to all other regions while Africa has the lowest average log GDP per capita. Both the Americas and Asia fall in the center with the regions being very comparable in their respective average log GDP per amounts. Overall, this graph gives us much insight into the original question as we are able to explore relationships and differences of the average log GDP between democratic and nondemocratic countries across world regions.   
+**ANSWER:** From the above graph, we can see that democracies tend to have higher average log GDP whereas countries that do NOT have democracy generally have a lower average log GDP in comparison across all four regions. This graph also allows us to look into the relationship between the regions themselves and their log GDP. We can see that Europe and the Americas both have higher average Log GDP for democratic countries compared to countries in Asia and Africa. On the other hand, Europe and Asia have higher average log GDP for nondemocratic countries compared to countries in the Americas and Africa. Europe has the highest average log GDP per capita for both countries with and without democracy compared to all other regions while Africa has the lowest average log GDP per capita. Both the Americas and Asia fall in the center with the regions being very comparable in their respective average log GDP per amounts. Overall, this graph gives us much insight into the original question as we are able to explore relationships and differences of the average log GDP between democratic and nondemocratic countries across world regions.  
