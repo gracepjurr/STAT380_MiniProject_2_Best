@@ -703,7 +703,7 @@ Which model would you recommend the lab use? Why? Are there trade-offs between i
 
 We recommend using the *KNN Multivariable Classification model* for the lab. We make this recommendation based upon its performance metrics. The KNN model has a higher testing accuracy (87.50%) and cross validation accuracy (77.08%) than the logistic regression model, which achieved a testing accuracy of 81.25% and cross validation accuracy of 74.62%.
 
-We should note, however, that while the KNN model has a better overall performance, the testing accuracy and the CV accuracy show a larger difference in percentage (approx. 10%) in comparison to the logistic regression model which only has as differnece of approximately 6.5%. This should caution us that some overfitting may be a potential issue with the KNN model, although no strong claims can be made at this time. Another trade-off with the KNN model comes from its complexity and interpretability. Since the KNN model uses all the predictor variables, it becomes more challenging to isolate, understand, and explain how the model makes individual  predictions. In contrast, the single logistic regression model is much simpler to follow since it only follows the relationship between HDI (predictor variable) and the probability of Democracy (response variable). 
+We should note, however, that while the KNN model has a better overall performance, the testing accuracy and the CV accuracy show a larger difference in percentage (approx. 10%) in comparison to the logistic regression model which only has as difference of approximately 6.5%. This should caution us that some overfitting may be a potential issue with the KNN model, although no strong claims can be made at this time. Another trade-off with the KNN model comes from its complexity and interpretability. Since the KNN model uses all the predictor variables, it becomes more challenging to isolate, understand, and explain how the model makes individual  predictions. In contrast, the single logistic regression model is much simpler to follow since it only follows the relationship between HDI (predictor variable) and the probability of Democracy (response variable). 
 
 Overall, even with some of the trade-offs with the multivariable KNN classification model, we still recommend this model to be used in the lab. Its metrics are the best overall, and demonstrate that it is an effective model for the purposes of predicting the response variable (Democracy). 
 
@@ -711,10 +711,27 @@ Overall, even with some of the trade-offs with the multivariable KNN classificat
 
 You will write your own question about the data, create a data visualization that can help answer your question, and write an answer to your question. The question/visualization should explore the relationship between at least 2 of the variables in the dataset. Be sure you include both the question and the answer to your question based on the visualization you have created. It should be a different question than last mini-project.
 
-**QUESTION:**
+**QUESTION:** How does average log GDP differ between democratic and nondemocratic countries across world regions?
 
 ```{r}
 
+FullData_viz<- FullData_2025|>
+  mutate(log_gdp=log10(GDP)) # log GDP for scaling
+
+# Calculate Average log GDP for each region and Democracy Group
+GDP_summary <- FullData_viz |>
+  group_by(world_4region, Democracy) |>
+  summarise(avg_log_gdp = mean(log_gdp))
+
+# Create grouped bar chart
+GDP_summary|>
+  ggplot(aes(x = world_4region, y = avg_log_gdp, fill = Democracy)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Regions",
+    y = "Average Log(GDP per capita)",
+    title = "Average Log GDP per Capita by World Regions and Democracy"
+  ) 
 ```
 
-**ANSWER:**
+**ANSWER:** From the above graph, we can see that democracies tend to have higher average log GDP whereas countries that do NOT have democracy generally have a lower average log GDP in comparison across all four regions. This graph also allows us to look into the relationship between the regions themselves and their log GDP. We can see that Europe and the Americas both have higher average Log GDP for democratic countries compared to countries in Asia and Africa. On the other hand, Europe and Asia have higher average log GDP for nondemocratic countries compared to countries in the Americas and Africa. Europe has the highest average log GDP per capita for both countries with and without democracy compared to all other regions while Africa has the lowest average log GDP per capita. Both the Americas and Asia fall in the center with the regions being very comparable in their respective average log GDP per amounts. Overall, this graph gives us much insight into the original question as we are able to explore relationships and differences of the average log GDP between democratic and nondemocratic countries across world regions.   
