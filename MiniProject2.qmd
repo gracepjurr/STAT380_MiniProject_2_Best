@@ -511,7 +511,8 @@ ggplot(FullData_bin, aes(x = HDI, y = bin_dem)) +
     method = "glm", method.args = list(family = "binomial"), 
     color = "dodgerblue", lty = 2, se = FALSE
   ) + 
-  geom_hline(aes(yintercept = 0.5), linetype = 3) 
+  geom_hline(aes(yintercept = 0.5), linetype = 3)+
+   labs(y="Democracy Bins (0 = No, 1 = Yes)",x="Human Development Index", title="HDI vs. Democracy")
 
 ```
 
